@@ -9,29 +9,26 @@ def make_table(rows, labels = None, centered = False):
     :return: A table representing the rows passed in.
     :   │ ─ ┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘
     """
-    longestLen = 0
-    amountColumn = 0
-    amountRow = 0
+    columnLen = 0
     for row in rows:
-        amountRow += 1
         for item in row:
-            amountColumn += 1
-            if len(str(item)) > longestLen:
-                longestLen = len(str(item))  #find the longest length of all words and then set that as the length of columns
+            if len(str(item)) > columnLen:
+                columnLen = len(str(item))
     for item in labels:
-        if len(str(labels)) > longestLen:
-            longestLen = len(str(labels))  #find the longest length of all words and then set that as the length of columns
-    columnLen = longestLen + 2 #add two for the start space and end space
-    print("col len " +str(columnLen))
-    amountColumn = int(amountColumn / amountRow)
+        if len(str(item)) > columnLen:
+            columnLen = len(str(item))
+    
+    #columnLen is longest amount of chr in items
+    amountRow = len(rows) #amount of items in row
+    amountColumn = len(rows[0]) #amount of items in column
 
     row = "┌"
-    for _ in range(columnLen):
+    for _ in range(columnLen+1) :
         row += "─"
     if amountRow > 1:
         for _ in range(amountColumn - 1):
             row += "┬"
-            for _ in range(columnLen):
+            for _ in range(columnLen+1):
                 row += "─"     
     row += "┐"
     
@@ -42,11 +39,11 @@ def make_table(rows, labels = None, centered = False):
         for item in labels:
             if centered == False:
                 row += " " + str(item)
-                extraSpace = columnLen - len(item)
+                extraSpace = columnLen - len(str(item))
                 for _ in range(extraSpace):
                     row += " "
             else:
-                extraSpace = columnLen - len(item)
+                extraSpace = columnLen - len(str(item))
                 padding = extraSpace / 2
                 print("padding len " +str(padding))
                 for _ in range(math.floor(padding)):
@@ -56,6 +53,49 @@ def make_table(rows, labels = None, centered = False):
                     row += " "
             row += "│"
         table.append(row)
+        row = "│"
+        for _ in range(columnLen+1) :
+            row += "─"
+        if amountRow > 1:
+            for _ in range(amountColumn - 1):
+                row += "┼"
+                for _ in range(columnLen+1):
+                    row += "─"     
+        row += "│"
+        table.append(row)
+
+    for list in rows:
+        row = "│"
+        for item in list:
+            if centered == False:
+                row += " " + str(item)
+                extraSpace = columnLen - len(str(item))
+                for _ in range(extraSpace):
+                    row += " "
+            else:
+                extraSpace = columnLen - len(str(item))
+                padding = extraSpace / 2
+                print("padding len " +str(padding))
+                for _ in range(math.floor(padding)):
+                    row += " "
+                row += " " + str(item)
+                for _ in range(math.ceil(padding)):
+                    row += " "
+            row += "│"
+        table.append(row)
+    
+    row = "└"
+    for _ in range(columnLen+1) :
+        row += "─"
+    if amountRow > 1:
+        for _ in range(amountColumn - 1):
+            row += "┴"
+            for _ in range(columnLen+1):
+                row += "─"     
+    row += "┘"
+    
+    table.append(row)
+    
     for x in table:
         print(x)
 
@@ -70,5 +110,5 @@ make_table(
         ["Ducky Lemon", 1]
     ],
     labels=["Name", "Duckiness"],
-    centered=True
+    centered=False
 )
