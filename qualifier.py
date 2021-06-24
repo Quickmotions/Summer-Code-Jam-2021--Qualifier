@@ -75,4 +75,6 @@ def make_table(rows, labels = None, centered = False):
             row += "┴"
     row += "┘"
     table += row + "\n"
+
+    
     return table
