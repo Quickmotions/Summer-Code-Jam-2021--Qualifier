@@ -1,6 +1,6 @@
 def make_table(rows, labels = None, centered = False):
     import math
-    table = []
+    table = ""
     """
     :param rows: 2D list containing objects that have a single-line representation (via `str`).
     All rows must be of the same length.
@@ -9,106 +9,70 @@ def make_table(rows, labels = None, centered = False):
     :return: A table representing the rows passed in.
     :   │ ─ ┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘
     """
-    columnLen = 0
-    for row in rows:
-        for item in row:
-            if len(str(item)) > columnLen:
-                columnLen = len(str(item))
-    for item in labels:
-        if len(str(item)) > columnLen:
-            columnLen = len(str(item))
-    
-    #columnLen is longest amount of chr in items
     amountRow = len(rows) #amount of items in row
     amountColumn = len(rows[0]) #amount of items in column
+    columnLen = []
+    for col in range(amountColumn):
+        columnLen.append(0)
+        for row in rows:
+            if len(str(row[col])) > columnLen[col]:
+                columnLen[col] = len(str(row[col]))
+        if labels != None:
+            if len(str(labels[col])) > columnLen[col]:
+                columnLen[col] = len(str(labels[col]))
+    
 
     row = "┌"
-    for _ in range(columnLen+1) :
-        row += "─"
-    if amountRow > 1:
-        for _ in range(amountColumn - 1):
+    for col in range(amountColumn):
+        row += "─" * (columnLen[col] +2)
+        if col != amountColumn -1:
             row += "┬"
-            for _ in range(columnLen+1):
-                row += "─"     
     row += "┐"
-    
-    table.append(row)
+    table += row + "\n"
 
     if labels != None:
         row = "│"
-        for item in labels:
+        for col in range(amountColumn):
             if centered == False:
-                row += " " + str(item)
-                extraSpace = columnLen - len(str(item))
-                for _ in range(extraSpace):
-                    row += " "
-            else:
-                extraSpace = columnLen - len(str(item))
-                padding = extraSpace / 2
-                print("padding len " +str(padding))
-                for _ in range(math.floor(padding)):
-                    row += " "
-                row += " " + str(item)
-                for _ in range(math.ceil(padding)):
-                    row += " "
+                padding = columnLen[col] - len(str(labels[col]))
+                row += " " + str(labels[col]) + " " * padding + " "
+            else: 
+                padding = columnLen[col] - len(str(labels[col]))
+                padding /=2
+                row += " " + " " * math.floor(padding) + str(labels[col]) + " " * math.ceil(padding) + " "
             row += "│"
-        table.append(row)
-        row = "│"
-        for _ in range(columnLen+1) :
-            row += "─"
-        if amountRow > 1:
-            for _ in range(amountColumn - 1):
+        table += row + "\n"
+        
+
+        row = "├"
+        for col in range(amountColumn):
+            row += "─" * (columnLen[col] +2)
+            if col != amountColumn -1:
                 row += "┼"
-                for _ in range(columnLen+1):
-                    row += "─"     
-        row += "│"
-        table.append(row)
+        row += "┤"
+        table += row + "\n"
+
+        
 
     for list in rows:
         row = "│"
-        for item in list:
+        for col in range(amountColumn):
             if centered == False:
-                row += " " + str(item)
-                extraSpace = columnLen - len(str(item))
-                for _ in range(extraSpace):
-                    row += " "
-            else:
-                extraSpace = columnLen - len(str(item))
-                padding = extraSpace / 2
-                print("padding len " +str(padding))
-                for _ in range(math.floor(padding)):
-                    row += " "
-                row += " " + str(item)
-                for _ in range(math.ceil(padding)):
-                    row += " "
+                padding = columnLen[col] - len(str(list[col]))
+
+                row += " " + str(list[col]) + " " * padding + " "
+            else: 
+                padding = columnLen[col] - len(str(list[col]))
+                padding /=2
+                row += " " + " " * math.floor(padding) + str(list[col]) + " " * math.ceil(padding) + " "
             row += "│"
-        table.append(row)
-    
+        table += row + "\n"
+
     row = "└"
-    for _ in range(columnLen+1) :
-        row += "─"
-    if amountRow > 1:
-        for _ in range(amountColumn - 1):
+    for col in range(amountColumn):
+        row += "─" * (columnLen[col] +2)
+        if col != amountColumn -1:
             row += "┴"
-            for _ in range(columnLen+1):
-                row += "─"     
     row += "┘"
-    
-    table.append(row)
-    
-    for x in table:
-        print(x)
-
-    
-
-
-make_table(
-    rows=[
-        ["Ducky Yellow", 3],
-        ["Ducky Dave", 12],
-        ["Ducky Tube", 7],
-        ["Ducky Lemon", 1]
-    ],
-    labels=["Name", "Duckiness"],
-    centered=False
-)
+    table += row + "\n"
+    return table
