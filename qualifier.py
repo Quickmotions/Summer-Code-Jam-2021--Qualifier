@@ -78,3 +78,14 @@ def make_table(rows, labels = None, centered = False):
 
     
     return table
+
+print(make_table(
+    rows=[['Apple', 5, 70, 'Red', 76], 
+    ['Banana', 3, 5, 'Yellow', 8],
+    ['Cherry', 7, 31, 'Red', 92], 
+    ['Kiwi', 4, 102, 'Green', 1], 
+    ['Strawberry', 6, 134, 'Red', 28]],
+    
+    
+    centered=True
+))
