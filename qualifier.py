@@ -86,6 +86,6 @@ print(make_table(
     ['Kiwi', 4, 102, 'Green', 1], 
     ['Strawberry', 6, 134, 'Red', 28]],
     
-    
+    labels=['fruit','tastiness', 'sweetness', 'colour', 'rating'],
     centered=True
 ))
